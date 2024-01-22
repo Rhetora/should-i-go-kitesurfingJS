@@ -10,7 +10,7 @@ const openweathermapKey = "5e1df15d1ca6979db5d1e2028ddf3643";
 
 form.addEventListener("submit", addLocation);
 
-
+list.addEventListener("click", removeLocation);
 
 function addLocation(event) {
     event.preventDefault();
@@ -57,6 +57,9 @@ function addLocation(event) {
 }
 
 function removeLocation(event) {
+    if (event.target.classList.contains("close-button")) {
+        event.target.parentElement.parentElement.remove();
+    }
 
 }
 
@@ -68,12 +71,15 @@ function locationMarkup(url) {
             if (wind.gust == null) wind.gust = wind.speed;
             const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
             const li = document.createElement("li");
+            li.dataset.name = name + "," + sys.country;
             li.classList.add("cityli");
             const markup = `
-        <h1 class='close-container'><button class="close-button">X</button></h1>
+        <h1 class='close-container'>
+            <button class="close-button">X</button>
+        </h1>
         <div class='city'>
             <div class="city-grid">
-                <h2 class="city-name" data-name="${name},${sys.country}"> 
+                <h2 class="city-name"> 
                     <span>${name}</span> 
                     <sup>${sys.country}</sup> 
                 </h2> 
