@@ -77,11 +77,11 @@ function locationMarkup(url) {
         </figure>
         </div>
         <div class="city-grid">
-        <div class="city-wind">${wind.speed}<sup>mph</sup> 
+        <div class="city-wind">${(wind.speed * 0.868976).toFixed(2)}<sup>kts</sup> 
         </div>
-        <div class="city-wind city-gust">${wind.gust}<sup>mph</sup> 
+        <div class="city-wind city-gust">${(wind.gust * 0.868976).toFixed(2)}<sup>kts</sup> 
         </div>
-        <div class="city-arrow" style="transform: rotate(${wind.deg-180}deg);">&uarr;
+        <div class="city-arrow" style="transform: rotate(${wind.deg - 180}deg);">&uarr;
         </div>
         </div>
         `;
