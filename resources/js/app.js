@@ -10,6 +10,8 @@ const openweathermapKey = "5e1df15d1ca6979db5d1e2028ddf3643";
 
 form.addEventListener("submit", addLocation);
 
+
+
 function addLocation(event) {
     event.preventDefault();
 
@@ -54,12 +56,16 @@ function addLocation(event) {
     locationMarkup(url);
 }
 
+function removeLocation(event) {
+
+}
+
 function locationMarkup(url) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const { main, name, sys, weather, wind } = data;
-            console.log(data);
+            if(wind.gust == null) wind.gust = wind.speed;
             const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
             const li = document.createElement("li");
             li.classList.add("city");
@@ -91,7 +97,6 @@ function locationMarkup(url) {
         .catch(() => {
             msg.textContent = "Please search for a valid city!";
         });
-
 
     msg.textContent = "";
     form.reset();
