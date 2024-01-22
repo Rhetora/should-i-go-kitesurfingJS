@@ -65,30 +65,33 @@ function locationMarkup(url) {
         .then(response => response.json())
         .then(data => {
             const { main, name, sys, weather, wind } = data;
-            if(wind.gust == null) wind.gust = wind.speed;
+            if (wind.gust == null) wind.gust = wind.speed;
             const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
             const li = document.createElement("li");
-            li.classList.add("city");
+            li.classList.add("cityli");
             const markup = `
-        <div class="city-grid">
-        <h2 class="city-name" data-name="${name},${sys.country}"> 
-        <span>${name}</span> 
-        <sup>${sys.country}</sup> 
-        </h2> 
-        <div class="city-temp">${Math.round(main.temp)}<sup>&deg;C</sup> 
-        </div>
-        <figure> 
-        <img class="city-icon" src=${icon} alt=${weather[0]["main"]}> 
-        <figcaption>${weather[0]["description"]}</figcaption> 
-        </figure>
-        </div>
-        <div class="city-grid">
-        <div class="city-wind">${(wind.speed * 0.868976).toFixed(2)}<sup>kts</sup> 
-        </div>
-        <div class="city-wind city-gust">${(wind.gust * 0.868976).toFixed(2)}<sup>kts</sup> 
-        </div>
-        <div class="city-arrow" style="transform: rotate(${wind.deg - 180}deg);">&uarr;
-        </div>
+        <h1 class='close-container'><button class="close-button">X</button></h1>
+        <div class='city'>
+            <div class="city-grid">
+                <h2 class="city-name" data-name="${name},${sys.country}"> 
+                    <span>${name}</span> 
+                    <sup>${sys.country}</sup> 
+                </h2> 
+                <div class="city-temp">${Math.round(main.temp)}<sup>&deg;C</sup> 
+                </div>
+                <figure> 
+                    <img class="city-icon" src=${icon} alt=${weather[0]["main"]}> 
+                    <figcaption>${weather[0]["description"]}</figcaption> 
+                </figure>
+            </div>
+            <div class="city-grid">
+                <div class="city-wind">${(wind.speed * 0.868976).toFixed(2)}<sup>kts</sup> 
+                </div>
+                <div class="city-wind city-gust">${(wind.gust * 0.868976).toFixed(2)}<sup>kts</sup> 
+                </div>
+                <div class="city-arrow" style="transform: rotate(${wind.deg - 180}deg);">&uarr;
+                </div>
+            </div>
         </div>
         `;
             li.innerHTML = markup;

@@ -20,14 +20,39 @@
     }
 }
 
-.ajax-section .city {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.ajax-section .cityli {
     position: relative;
     padding: 40px 10%;
+    padding-top: 3%;
     border-radius: 20px;
     background: var(--text_dark);
     color: var(--text_light);
+}
+
+.ajax-section .cityli .close-container {
+    height: 40px 10%;
+    text-align: right;
+}
+
+.ajax-section .cityli .close-button {
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1em;
+    background-color: black;
+    color: var(--text_med);
+    width: 1.7em;
+    height: 1.7em;
+    padding: 0.2em;
+    opacity: 0.2;
+}
+
+.ajax-section .cityli .close-button:hover {
+    opacity: 1;
+}
+
+.ajax-section .city {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .ajax-section .city::after {
@@ -55,6 +80,7 @@
     margin-top: 2x;
     color: var(--text_light);
 }
+
 .ajax-section .city-wind {
     text-align: right;
     font-size: 3rem;
@@ -62,6 +88,7 @@
     margin-top: 0px;
     color: var(--text_med);
 }
+
 .ajax-section .city-gust {
     color: var(--text_light);
 }
@@ -74,7 +101,7 @@
     color: var(--text_light);
 }
 
-.ajax-section .city sup {
+.ajax-section .cityli sup {
     font-size: 0.6em;
 }
 
