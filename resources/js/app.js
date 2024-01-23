@@ -79,7 +79,7 @@ function locationMarkup(url) {
         </h1>
         <div class='city'>
             <div class="city-grid">
-                <h2 class="city-name"> 
+                <h2 class="city-name" data-name="${name},${sys.country}"> 
                     <span>${name}</span> 
                     <sup>${sys.country}</sup> 
                 </h2> 
