@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Should I go Kiting?</title>
+  <head>
+    <title>Should I go kiting?</title>
 
     <link rel="stylesheet" href="css/app.css" media="screen" />
+  </head>
 
-</head>
-
-<body>
+  <body>
     <section class="top-banner">
-        <div class="container">
-            <h1 class="heading">Should I go Kiting?</h1>
-            <form>
-                <input type="text" placeholder="Search for a city" autofocus>
-                <button type="submit">SUBMIT</button>
-                <span class="msg"></span>
-            </form>
-        </div>
+      <div class="header-grid">
+        <h1 class="heading">Should I go Kiting?</h1>
+        <form>
+          <input
+            type="text"
+            class="input-city"
+            placeholder="Search for a city"
+            autofocus
+          />
+          <button type="submit">SUBMIT</button>
+          <span class="msg"></span>
+        </form>
+      </div>
+      <div class="header-grid">
+        <input
+          type="text"
+          class="input-weight"
+          placeholder="Enter weight in kgs"
+        />
+      </div>
     </section>
     <section class="ajax-section">
-        <div class="container">
-            <ul class="cities"></ul>
-        </div>
+      <div class="container">
+        <ul class="cities"></ul>
+      </div>
     </section>
 
     <script type="module" src="js/app.js"></script>
-</body>
-
+  </body>
 </html>
