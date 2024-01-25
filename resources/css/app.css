@@ -53,7 +53,7 @@ body {
 .top-banner {
   color: var(--text_dark);
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
 }
 
 .heading {
@@ -84,8 +84,59 @@ body {
   color: var(--text_med);
   font-size: 1.5rem;
   border-bottom: none;
-  padding-top: 8rem;
+  padding-top: 1.5rem;
 }
+
+.kites-heading {
+    font-size: 2rem;
+}
+
+.kites-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    height: 4rem;
+
+}
+
+.kite-checkbox {
+  font-family: system-ui, sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  /*font-weight: bold;*/
+}
+
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 0.7em;
+    height: 0.7em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+  }
+
+  input[type=checkbox]:checked {
+    background-color: var(--red);
+  }
+  /* input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  } */
 
 .top-banner form button {
   font-size: 1rem;

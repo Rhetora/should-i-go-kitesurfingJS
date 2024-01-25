@@ -3,6 +3,10 @@ const input = document.querySelector(".top-banner .input-city");
 const inputWeight = document.querySelector(".input-weight");
 const msg = document.querySelector(".top-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
+const checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+let weight;
+let kites = {};
 
 const openweathermapKey = "5e1df15d1ca6979db5d1e2028ddf3643";
 
@@ -10,76 +14,79 @@ const openweathermapKey = "5e1df15d1ca6979db5d1e2028ddf3643";
 
 form.addEventListener("submit", addLocation);
 
-inputWeight.addEventListener("change", updateKiteSize);
+inputWeight.addEventListener("change", updateWeight);
+
+for (var i = 0; i < checkboxes.length; i++) checkboxes[i].addEventListener("click", updateKiteList);
 
 list.addEventListener("click", removeLocation);
 
 function addLocation(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    //Input pprocess
-    const inputVal = input.value
-        .toLowerCase()
-        .replace(" ", "")
-        .replace("uk", "gb");
+  //Input pprocess
+  const inputVal = input.value
+    .toLowerCase()
+    .replace(" ", "")
+    .replace("uk", "gb");
 
-    //Get tile list
-    const listItems = list.querySelectorAll(".ajax-section .city");
-    const listItemsArray = Array.from(listItems);
+  //Get tile list
+  const listItems = list.querySelectorAll(".ajax-section .city");
+  const listItemsArray = Array.from(listItems);
 
-    //handle duplicate location
-    if (listItemsArray.length > 0) {
-        const filteredArray = listItemsArray.filter((el) => {
-            let content = "";
+  //handle duplicate location
+  if (listItemsArray.length > 0) {
+    const filteredArray = listItemsArray.filter((el) => {
+      let content = "";
 
-            if (inputVal.includes(",")) {
-                //athens,grrrrrr->invalid country code, so we keep only the first part of inputVal
-                if (inputVal.split(",")[1].length > 5) {
-                    inputVal = inputVal.split(",")[0];
-                    content = el
-                        .querySelector(".city-name span")
-                        .textContent.toLowerCase();
-                } else {
-                    content = el.querySelector(".city-name").dataset.name.toLowerCase();
-                }
-            } else {
-                //athens
-                content = el.querySelector(".city-name span").textContent.toLowerCase();
-            }
-            return content == inputVal.toLowerCase();
-        });
-        //3
-        if (filteredArray.length > 0) {
-            msg.textContent = `You already know the weather for ${filteredArray[0].querySelector(".city-name span").textContent
-                } ...otherwise be more specific by providing the country code as well`;
-            form.reset();
-            input.focus();
-            return;
+      if (inputVal.includes(",")) {
+        //athens,grrrrrr->invalid country code, so we keep only the first part of inputVal
+        if (inputVal.split(",")[1].length > 5) {
+          inputVal = inputVal.split(",")[0];
+          content = el
+            .querySelector(".city-name span")
+            .textContent.toLowerCase();
+        } else {
+          content = el.querySelector(".city-name").dataset.name.toLowerCase();
         }
+      } else {
+        //athens
+        content = el.querySelector(".city-name span").textContent.toLowerCase();
+      }
+      return content == inputVal.toLowerCase();
+    });
+    //3
+    if (filteredArray.length > 0) {
+      msg.textContent = `You already know the weather for ${
+        filteredArray[0].querySelector(".city-name span").textContent
+      } ...otherwise be more specific by providing the country code as well`;
+      form.reset();
+      input.focus();
+      return;
     }
+  }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${openweathermapKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${openweathermapKey}&units=metric`;
 
-    locationMarkup(url);
+  locationMarkup(url);
 }
 
 function removeLocation(event) {
-    if (event.target.classList.contains("close-button")) {
-        event.target.parentElement.parentElement.remove();
-    }
+  if (event.target.classList.contains("close-button")) {
+    event.target.parentElement.parentElement.remove();
+  }
 }
 
 function locationMarkup(url) {
-    fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-            const { main, name, sys, weather, wind } = data;
-            if (wind.gust == null) wind.gust = wind.speed;
-            const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
-            const li = document.createElement("li");
-            li.dataset.name = name + "," + sys.country;
-            li.classList.add("cityli");
-            const markup = `
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const { main, name, sys, weather, wind } = data;
+      if (wind.gust == null) wind.gust = wind.speed;
+      const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
+      const li = document.createElement("li");
+      li.dataset.name = name + "," + sys.country;
+      li.classList.add("cityli");
+      const markup = `
         <h1 class='close-container'>
             <button class="close-button">X</button>
         </h1>
@@ -90,49 +97,72 @@ function locationMarkup(url) {
                     <sup>${sys.country}</sup> 
                 </h2> 
                 <div class="city-temp">${Math.round(
-                main.temp
-            )}<sup>&deg;C</sup> 
+                  main.temp
+                )}<sup>&deg;C</sup> 
                 </div>
                 <figure> 
-                    <img class="city-icon" src=${icon} alt=${weather[0]["main"]
-                }> 
+                    <img class="city-icon" src=${icon} alt=${
+        weather[0]["main"]
+      }> 
                     <figcaption>${weather[0]["description"]}</figcaption> 
                 </figure>
             </div>
             <div class="city-grid">
                 <div class="city-wind">${(wind.speed * 0.868976).toFixed(
-                    2
+                  2
                 )}<sup>kts</sup> 
                 </div>
                 <div class="city-wind city-gust">${(
-                    wind.gust * 0.868976
+                  wind.gust * 0.868976
                 ).toFixed(2)}<sup>kts</sup> 
                 </div>
-                <div class="city-arrow" style="transform: rotate(${wind.deg - 180
+                <div class="city-arrow" style="transform: rotate(${
+                  wind.deg - 180
                 }deg);">&uarr;
                 </div>
             </div>
         </div>
         `;
-            li.innerHTML = markup;
-            list.appendChild(li);
-        })
-        .catch(() => {
-            msg.textContent = "Please search for a valid city!";
-        });
+      li.innerHTML = markup;
+      list.appendChild(li);
+    })
+    .catch(() => {
+      msg.textContent = "Please search for a valid city!";
+    });
 
-    msg.textContent = "";
-    form.reset();
-    input.focus();
+  msg.textContent = "";
+  form.reset();
+  input.focus();
 }
 
-function updateKiteSize(event) {
-    let weight = parseInt(inputWeight.value);
-    if (!Number.isInteger(weight)) {
-        inputWeight.value = "";
-        inputWeight.placeholder = "Enter a number!";
-        return;
-    }
-    inputWeight.value = weight+"kgs";
-    console.log(weight);
+function updateWeight(event) {
+  weight = parseInt(inputWeight.value);
+  if (!Number.isInteger(weight)) {
+    inputWeight.value = "";
+    inputWeight.placeholder = "Enter a number!";
+    return;
+  }
+  inputWeight.value = weight + "kgs";
+}
+
+function updateKiteList(event) {
+  let kiteSizes = {
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
+    10: false,
+    11: false,
+    12: false,
+    13: false,
+    15: false,
+    17: false
+  };
+
+  for(const kiteSize in kiteSizes) {
+    kiteSizes[kiteSize] = document.getElementById(kiteSize+"m").checked;
+  }
+  kites = kiteSizes;
 }
