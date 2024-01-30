@@ -7,8 +7,20 @@ const checkboxes = document.querySelectorAll("input[type='checkbox']");
 
 let weight;
 let kites = {};
+let locations = [];
 
 const openweathermapKey = "5e1df15d1ca6979db5d1e2028ddf3643";
+
+class location {
+  constructor(data, dom) {
+    this.dom = dom;
+    this.main = data.main;
+    this.sys = data.sys;
+    this.name = data.name;
+    this.weather = data.weather;
+    this.wind = data.wind;
+  }
+}
 
 //const url2 = "https://api.open-meteo.com/v1/forecast?latitude=51.41326&longitude=4.20546&hourly=wind_speed_10m,wind_speed_80m,wind_speed_120m,wind_direction_10m,wind_direction_80m,wind_direction_120m&forecast_days=1&models=ecmwf_ifs04"
 
@@ -72,20 +84,31 @@ function addLocation(event) {
 
 function removeLocation(event) {
   if (event.target.classList.contains("close-button")) {
-    event.target.parentElement.parentElement.remove();
+    let dom = event.target.parentElement.parentElement;
+    for(let loc of locations){
+      if(loc.dom == dom) locations.splice(locations.indexOf(loc), 1);
+    }
+    dom.remove();
   }
+
 }
 
 function locationMarkup(url) {
+  let urlData;
+  let elementDom;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
       const { main, name, sys, weather, wind } = data;
+      
       if (wind.gust == null) wind.gust = wind.speed;
       const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
       const li = document.createElement("li");
       li.dataset.name = name + "," + sys.country;
       li.classList.add("cityli");
+      urlData = data;
+      elementDom = li;
+
       const markup = `
         <h1 class='close-container'>
             <button class="close-button">X</button>
@@ -125,11 +148,12 @@ function locationMarkup(url) {
         `;
       li.innerHTML = markup;
       list.appendChild(li);
+      locations.push(new location(urlData, elementDom));
     })
     .catch(() => {
       msg.textContent = "Please search for a valid city!";
     });
-
+  
   msg.textContent = "";
   form.reset();
   input.focus();
@@ -143,6 +167,7 @@ function updateWeight(event) {
     return;
   }
   inputWeight.value = weight + "kgs";
+  console.log(locations);
 }
 
 function updateKiteList(event) {
